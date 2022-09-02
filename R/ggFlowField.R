@@ -64,6 +64,10 @@ ggFlowField <- function(deriv, xlim, ylim, parameters = NULL, system = "two.dim"
                                                            sqrt(2) * max(sqrt(2 * abs.dy.non/(abs.dy.non +
                                                                                                 (1/abs.dy.non))), sqrt(2 * (1/abs.dy.non)/(abs.dy.non +
                                                                                                                                              (1/abs.dy.non)))))
+    xmin = numeric()
+    xmax = numeric()
+    ymin = numeric()
+    ymax = numeric()
     for (i in 1:points) {
       for (j in 1:points) {
         if (dy[i, j] != 0) {
@@ -91,11 +95,18 @@ ggFlowField <- function(deriv, xlim, ylim, parameters = NULL, system = "two.dim"
             x.shift <- y.shift * mean(abs.dy)/max.abs.dy
           }
         }
-        graphics::arrows(x[i] - x.shift, y[j] - y.shift,
-                         x[i] + x.shift, y[j] + y.shift, length = arrow.head,
-                         col = col, ...)
+        xmin = c(xmin, x[i] - x.shift)
+        xmax = c(xmax, x[i] + x.shift)
+        ymin = c(ymin, y[j] - y.shift)
+        ymax = c(ymax, y[j] + y.shift)
       }
     }
+    p <- p +
+      geom_segment(aes(x = xmin, xend = xmax, y = ymin, yend = ymax),
+                   arrow = arrow(length = unit(arrow.head, "in")),
+                   col = col) +
+      labs(x = xlab, y = ylab)
+    print(p)
     return(list(add = add, arrow.head = arrow.head, arrow.type = arrow.type,
                 col = col, deriv = deriv, dy = dy, frac = frac,
                 parameters = parameters, points = points, system = system,
@@ -120,10 +131,10 @@ ggFlowField <- function(deriv, xlim, ylim, parameters = NULL, system = "two.dim"
                                                            sqrt(2) * max(sqrt(2 * (abs.dy.non/abs.dx.non)/((abs.dy.non/abs.dx.non) +
                                                                                                              (abs.dx.non/abs.dy.non))), sqrt(2 * (abs.dx.non/abs.dy.non)/((abs.dy.non/abs.dx.non) +
                                                                                                                                                                             (abs.dx.non/abs.dy.non)))))
-    xmin = numeric() #
-    xmax = numeric() #
-    ymin = numeric() #
-    ymax = numeric() #
+    xmin = numeric()
+    xmax = numeric()
+    ymin = numeric()
+    ymax = numeric()
     for (i in 1:points) {
       for (j in 1:points) {
         if (any(dx[i, j] != 0, dy[i, j] != 0)) {
@@ -168,16 +179,16 @@ ggFlowField <- function(deriv, xlim, ylim, parameters = NULL, system = "two.dim"
         }
       }
     }
+    p <- p +
+      geom_segment(aes(x = xmin, xend = xmax, y = ymin, yend = ymax),
+                   arrow = arrow(length = unit(arrow.head, "in")),
+                   col = col) +
+      labs(x = xlab, y = ylab)
+    print(p)
+    return(list(add = add, arrow.head = arrow.head, arrow.type = arrow.type,
+                col = col, deriv = deriv, dx = dx, dy = dy, frac = frac,
+                parameters = parameters, points = points, system = system,
+                x = x, xlab = xlab, xlim = xlim, y = y, ylab = ylab,
+                ylim = ylim))
   }
-  p <- p +
-    geom_segment(aes(x = xmin, xend = xmax, y = ymin, yend = ymax),
-                 arrow = arrow(length = unit(arrow.head, "in")),
-                 col = col) +
-    labs(x = xlab, y = ylab)
-  print(p)
-  return(list(add = add, arrow.head = arrow.head, arrow.type = arrow.type,
-              col = col, deriv = deriv, dx = dx, dy = dy, frac = frac,
-              parameters = parameters, points = points, system = system,
-              x = x, xlab = xlab, xlim = xlim, y = y, ylab = ylab,
-              ylim = ylim))
 }

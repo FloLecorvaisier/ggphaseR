@@ -17,7 +17,7 @@ ggFlowField(deriv, xlim, ylim, parameters = NULL, system = "two.dim",
   \item{xlim}{Vector with lower and upper limits for the first variable of the system.}
   \item{ylim}{Vector with lower and upper limits for the second variable of the system, if two-dimensional.}
   \item{parameters}{Numeric vector containing the parameters passed to \code{deriv}. Not sure how this works. Defaults to \code{NULL}.}
-  \item{system}{Indicates if the system is either one-dimensional (\code{"one-dim"}) or two-dimensional (\code{"two-dim"}). Only works for \code{"two-dim"} for now. Defaults to \code{"two-dim"}.}
+  \item{system}{Indicates if the system is either one-dimensional (\code{"one-dim"}) or two-dimensional (\code{"two-dim"}). Defaults to \code{"two-dim"}.}
   \item{points}{Numerical value setting the number of arrows to be plotted on one row/column (i.e. the total number of arrows will be points ** 2, minus arrows that should be located at equilibrium points). Defaults to 21.}
   \item{col}{Sets the colour of the arrows. Either the name of the colour or its hexadecimal code, as a character vector. Defaults to \code{"gray"}.}
   \item{arrow.type}{Define if the length of the arrows must reflect the magnitude of the derivative \code{"proportional"} or simply reflect the gradient of the derivative (\code{"equal"}). Defaults to \code{"equal"}.}
@@ -70,7 +70,7 @@ Most of the code used in the function comes from Michael J Grayling's \pkg{phase
 \examples{
 require(ggplot2)
 
-# The model that will be used, in the form of a function.
+# An example of two-dimensions model.
 LotkaVolterra <- function(time, y, param) {
     dx = 2/3 * y[1] - 4/3 * y[1] * y[2]
     dy = 1 * y[1] * y[2] - 1 * y[2]
@@ -84,4 +84,15 @@ ggFlowField(LotkaVolterra, xlim = c(0, 4), ylim = c(0, 2.5), points = 21, add = 
 
 # Directly creates the flow field on a new plot.
 ggFlowField(LotkaVolterra, xlim = c(0, 4), ylim = c(0, 2.5), points = 11, add = F, xlab = "Prey", ylab = "Predator")
+
+# Another example, this time with a one-dimension model. Corresponds to 'example2' from phaseR.
+example2 <- function (time, y, param) {
+    dy = y * (1 - y) * (2 - y)
+    return(list(dy))
+}
+
+# Creates a ggplot object then add the flow field. Note how the x axis is now the time by default.
+ggplot() +
+  theme_minimal()
+ggFlowField(example2, xlim = c(0, 2), ylim = c(0, 3), add = T, system = "one.dim")
 }
