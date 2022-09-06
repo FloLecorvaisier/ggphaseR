@@ -1,7 +1,8 @@
 ggFlowField <- function(deriv, xlim, ylim, parameters = NULL, system = "two.dim",
           points = 21, col = "gray", arrow.type = "equal", arrow.head = 0.05,
-          frac = 1, add = TRUE, state.names = if (system == "two.dim") c("x",
-                                                                         "y") else "y", xlab = if (system == "two.dim") state.names[1] else "t",
+          frac = 1, add = TRUE,
+          state.names = if (system == "two.dim") c("x", "y") else "y",
+          xlab = if (system == "two.dim") state.names[1] else "t",
           ylab = if (system == "two.dim") state.names[2] else state.names[1])
 {
   if (any(!is.vector(xlim), length(xlim) != 2)) {
