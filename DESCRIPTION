@@ -1,7 +1,7 @@
 Package: ggphaseR
 Type: Package
 Title: Drawing ggplot Phase Planes for ODE Systems
-Version: 0.1.0
+Version: 0.1.1
 Author: Florian Lecorvaisier
 Maintainer: Florian Lecorvaisier <florian.lecorvaisier@univ-lyon1.fr>
 License: Dont't know yet
